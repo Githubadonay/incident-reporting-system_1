@@ -28,5 +28,21 @@ class ReportService {
       return false;
     }
   }
+  Future<List<Report>> fetchReports() async {
+    final url = Uri.parse('$_baseUrl/reports');
+    try {
+      final response =
+          await http.get(url).timeout(const Duration(seconds: 10));
+      if (response.statusCode == 200) {
+        final List data = jsonDecode(response.body) as List;
+        return data
+            .map((e) => Report.fromJson(e as Map<String, dynamic>))
+            .toList();
+      }
+    } catch (e) {
+      debugPrint('Error fetching reports: $e');
+    }
+    return [];
+  }
 }
 

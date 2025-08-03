@@ -12,12 +12,21 @@ class Report {
     required this.date,
     this.imageUrl,
   });
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'description': description,
+      'location': location,
+      'date': date.toIso8601String(),
+      if (imageUrl != null) 'imageUrl': imageUrl,
+    };
+  }
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'description': description,
-    'location': location,
-    'date': date.toIso8601String(),
-    'imageUrl': imageUrl,
-  };
+  factory Report.fromJson(Map<String, dynamic> json) => Report(
+    id: json['id'] as String,
+    description: json['description'] as String,
+    location: json['location'] as String,
+    date: DateTime.parse(json['date'] as String),
+    imageUrl: json['imageUrl'] as String?,
+  );
 }
