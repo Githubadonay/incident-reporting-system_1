@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import '../../models/report.dart';
+import '../../services/report_service.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -26,28 +28,48 @@ class _ReportScreenState extends State<ReportScreen> {
     }
   }
 
-  // Inside _ReportScreenState
-void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      // Placeholder for later submission logic
-      debugPrint('Description: ${_descriptionController.text}');
-      debugPrint('Location: ${_locationController.text}');
-      debugPrint('Anonymous: $_isAnonymous');
-      debugPrint('Image: ${_imageFile?.path ?? 'None'}');
+// inside _ReportScreenState
+final ReportService _service = ReportService();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Report submitted! (simulation)')),
-      );
+Future<void> _submitForm() async {
+  if (!_formKey.currentState!.validate()) return;
 
-      _formKey.currentState!.reset();
-      _descriptionController.clear();
-      _locationController.clear();
-      setState(() {
-        _imageFile = null;
-        _isAnonymous = false;
-      });
-    }
+  // Build Report model
+  final report = Report(
+    id: DateTime.now().millisecondsSinceEpoch.toString(),
+    description: _descriptionController.text,
+    location: _locationController.text,
+    date: DateTime.now(),
+    imageUrl: _imageFile?.path,
+  );
+
+  // Show loading
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => const Center(child: CircularProgressIndicator()),
+  );
+
+  // Submit to backend
+  final success = await _service.submitReport(report, anonymous: _isAnonymous);
+
+  // Hide loading
+  Navigator.of(context).pop();
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(success ? 'Report sent!' : 'Submission failed.')),
+  );
+
+  if (success) {
+    _formKey.currentState!.reset();
+    _descriptionController.clear();
+    _locationController.clear();
+    setState(() {
+      _imageFile = null;
+      _isAnonymous = false;
+    });
   }
+}
 
 
   @override
