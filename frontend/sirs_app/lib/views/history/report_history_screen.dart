@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../models/report.dart';
 import '../../services/report_service.dart';
+import 'report_detail_screen.dart';
+
 
 class ReportHistoryScreen extends StatefulWidget {
   const ReportHistoryScreen({super.key});
@@ -51,7 +53,13 @@ class _ReportHistoryScreenState extends State<ReportHistoryScreen> {
                   trailing:
                       rpt.imageUrl != null ? const Icon(Icons.image) : null,
                   onTap: () {
-                  },
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                         builder: (_) => ReportDetailScreen(report: rpt),
+                      ),
+                    );
+                    },
                 ),
               );
             },
