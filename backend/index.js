@@ -1,10 +1,9 @@
-// backend/index.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 // In-memory array to hold reports during development
 const reports = [];
@@ -14,11 +13,11 @@ app.use(bodyParser.json());
 
 app.post('/report', (req, res) => {
   console.log('Received report:', req.body);
-  reports.push(req.body);//allows each imcoming report to be stored
+  reports.push(req.body); //allows each imcoming report to be stored
   res.status(200).send({ message: 'Received' });
 });
 
-//fetch all reports
+//fetch all reports and drops it to the report history 
 app.get('/reports', (req, res) => {
   res.status(200).json(reports);
 });

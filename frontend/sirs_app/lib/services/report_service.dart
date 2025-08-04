@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../models/report.dart';
 
 class ReportService {
+  //error system doesnt know what my host is, created an if method to see which im using android or IOS
   static final _host = Platform.isAndroid ? '10.0.2.2' : 'localhost';
   final String _baseUrl = 'http://$_host:3000';
 
@@ -16,10 +17,7 @@ class ReportService {
           .post(
             url,
             headers: {'Content-Type': 'application/json'},
-            body: jsonEncode({
-              ...report.toJson(),
-              'anonymous': anonymous,
-            }),
+            body: jsonEncode({...report.toJson(), 'anonymous': anonymous}),
           )
           .timeout(const Duration(seconds: 10));
       return response.statusCode == 200;
@@ -28,11 +26,11 @@ class ReportService {
       return false;
     }
   }
+
   Future<List<Report>> fetchReports() async {
     final url = Uri.parse('$_baseUrl/reports');
     try {
-      final response =
-          await http.get(url).timeout(const Duration(seconds: 10));
+      final response = await http.get(url).timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final List data = jsonDecode(response.body) as List;
         return data
@@ -45,4 +43,3 @@ class ReportService {
     return [];
   }
 }
-

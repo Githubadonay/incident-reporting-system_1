@@ -15,8 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = const [
-    Center(
-      child: Text('Report Incidents,')),         // Simple placeholder
+    Center(child: Text('Report Incidents,')),
     ReportScreen(),
     ReportHistoryScreen(),
     ProfileScreen(),
@@ -39,4 +38,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
