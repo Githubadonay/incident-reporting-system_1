@@ -20,13 +20,13 @@ class _HomeScreenState extends State<HomeScreen> {
     ReportHistoryScreen(),
     ProfileScreen(),
   ];
-
+// with a click go to each tab
   void _onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
   }
-
+// clean img, show a little info and a button taking you the report section
   @override
   Widget build(BuildContext context) {
     return Scaffold(

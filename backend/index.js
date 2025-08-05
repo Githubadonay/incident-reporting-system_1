@@ -1,3 +1,4 @@
+//import packages using require 
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -10,7 +11,7 @@ const reports = [];
 
 app.use(cors());
 app.use(bodyParser.json());
-
+// pulls the post from reports 
 app.post('/report', (req, res) => {
   console.log('Received report:', req.body);
   reports.push(req.body); //allows each imcoming report to be stored

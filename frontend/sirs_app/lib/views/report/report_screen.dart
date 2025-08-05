@@ -17,7 +17,8 @@ class _ReportScreenState extends State<ReportScreen> {
   final TextEditingController _locationController = TextEditingController();
   File? _imageFile;
   bool _isAnonymous = false;
-
+  // navigates to file to pick a phote.
+  //fucntion for IMG
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: ImageSource.gallery);
@@ -28,49 +29,52 @@ class _ReportScreenState extends State<ReportScreen> {
     }
   }
 
-// inside _ReportScreenState
-final ReportService _service = ReportService();
+  // inside _ReportScreenState
+  final ReportService _service = ReportService();
+  //function for the form submition
+  Future<void> _submitForm() async {
+    if (!_formKey.currentState!.validate()) return;
 
-Future<void> _submitForm() async {
-  if (!_formKey.currentState!.validate()) return;
+    // Build Report model
+    final report = Report(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      description: _descriptionController.text,
+      location: _locationController.text,
+      date: DateTime.now(),
+      imageUrl: _imageFile?.path,
+    );
 
-  // Build Report model
-  final report = Report(
-    id: DateTime.now().millisecondsSinceEpoch.toString(),
-    description: _descriptionController.text,
-    location: _locationController.text,
-    date: DateTime.now(),
-    imageUrl: _imageFile?.path,
-  );
+    // Shows that its loading
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
 
-  // Show loading
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (_) => const Center(child: CircularProgressIndicator()),
-  );
+    // Submits report to backend to be stored
+    final success = await _service.submitReport(
+      report,
+      anonymous: _isAnonymous,
+    );
 
-  // Submit to backend
-  final success = await _service.submitReport(report, anonymous: _isAnonymous);
+    // when successfully submited the application stops loading and allows you to submit agian
+    Navigator.of(context).pop();
 
-  // Hide loading
-  Navigator.of(context).pop();
-
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(success ? 'Report sent!' : 'Submission failed.')),
-  );
-
-  if (success) {
-    _formKey.currentState!.reset();
-    _descriptionController.clear();
-    _locationController.clear();
-    setState(() {
-      _imageFile = null;
-      _isAnonymous = false;
-    });
+    //lets users know if the report went through or not.
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(success ? 'Report sent!' : 'Submission failed.')),
+    );
+    //clean it back up to be used again
+    if (success) {
+      _formKey.currentState!.reset();
+      _descriptionController.clear();
+      _locationController.clear();
+      setState(() {
+        _imageFile = null;
+        _isAnonymous = false;
+      });
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -79,10 +83,12 @@ Future<void> _submitForm() async {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
+          // decription, location, img, amonymous and submit are stored in _formkey( superclass)
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // description controller
               TextFormField(
                 controller: _descriptionController,
                 maxLines: 5,
@@ -95,6 +101,7 @@ Future<void> _submitForm() async {
                     : null,
               ),
               const SizedBox(height: 16),
+              // location controller
               TextFormField(
                 controller: _locationController,
                 decoration: const InputDecoration(
@@ -103,6 +110,7 @@ Future<void> _submitForm() async {
                 ),
               ),
               const SizedBox(height: 16),
+              //img controller
               ElevatedButton.icon(
                 onPressed: _pickImage,
                 icon: const Icon(Icons.camera_alt),
@@ -114,12 +122,14 @@ Future<void> _submitForm() async {
                   child: Text('Selected: ${_imageFile!.path.split('/').last}'),
                 ),
               const SizedBox(height: 16),
+              //anonymous controller
               SwitchListTile(
                 value: _isAnonymous,
                 onChanged: (val) => setState(() => _isAnonymous = val),
                 title: const Text('Submit anonymously'),
               ),
               const SizedBox(height: 20),
+              // submit buttom controller
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

@@ -9,7 +9,7 @@ class BottomNavBar extends StatelessWidget {
     required this.currentIndex,
     required this.onTap,
   });
-
+// this is where the nav-bar is implemented 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(

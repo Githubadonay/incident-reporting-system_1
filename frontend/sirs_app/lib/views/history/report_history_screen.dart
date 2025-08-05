@@ -15,6 +15,7 @@ class _ReportHistoryScreenState extends State<ReportHistoryScreen> {
   final ReportService _service = ReportService();
   late Future<List<Report>> _reportsFuture;
 
+//calls the fetchreport from server
   @override
   void initState() {
     super.initState();
@@ -31,13 +32,17 @@ class _ReportHistoryScreenState extends State<ReportHistoryScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (snapshot.hasError) {
+          //if any error comes up due to network or something related to the http throw error
+          else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
+          // else throw a proper snapshot
           final reports = snapshot.data!;
-          if (reports.isEmpty) {
+          //if nothing is reported report history is empty
+          if(reports.isEmpty) {
             return const Center(child: Text('No reports yet'));
           }
+          // design a clean look for the report maybe a card style, tap and enter to see full report
           return ListView.builder(
             itemCount: reports.length,
             itemBuilder: (context, i) {

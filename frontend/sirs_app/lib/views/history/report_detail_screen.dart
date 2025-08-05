@@ -5,7 +5,7 @@ import '../../models/report.dart';
 class ReportDetailScreen extends StatelessWidget {
   final Report report;
   const ReportDetailScreen({super.key, required this.report});
-
+// inside each card list, description, location, date, and img! anonymous not needed.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +28,7 @@ class ReportDetailScreen extends StatelessWidget {
             Text('Date', style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 8),
             Text(report.date.toLocal().toString()),
-            // Image (if any)
+            // Img if there are any
             if (report.imageUrl != null) ...[
               const SizedBox(height: 16),
               Text('Attached Image', style: Theme.of(context).textTheme.titleMedium),
