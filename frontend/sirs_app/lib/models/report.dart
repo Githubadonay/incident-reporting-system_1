@@ -1,5 +1,5 @@
 // simple class holding the reports in Json format so it can be pulled by nodejs
-// store a id, decription, location, date, img(file)
+//store a id, decription, location, date, img(file)
 class Report {
   final int id;
   final String description;
