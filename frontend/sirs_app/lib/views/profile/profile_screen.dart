@@ -30,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
               onTap: () {
-                /* TODO: navigate to settings */
+                // add nav to controll the setting
               },
             ),
             //Support
@@ -38,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
               leading: const Icon(Icons.support),
               title: const Text('Support'),
               onTap: () {
-                /* TODO: open support */
+                // nav to get supprt
               },
             ),
             const Spacer(),
@@ -46,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  /* TODO: implement logout */
+                  // nav to logout* TODO: implement logout */
                 },
                 child: const Text('Logout'),
               ),
