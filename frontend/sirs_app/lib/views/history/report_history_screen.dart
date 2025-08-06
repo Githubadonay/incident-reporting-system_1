@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../../models/report.dart';
 import '../../services/report_service.dart';
@@ -21,7 +23,7 @@ class _ReportHistoryScreenState extends State<ReportHistoryScreen> {
     super.initState();
     _reportsFuture = _service.fetchReports();
   }
-
+// widget for the history report (design)
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +53,14 @@ class _ReportHistoryScreenState extends State<ReportHistoryScreen> {
                 margin:
                     const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ListTile(
-                  title: Text(rpt.description),
+                  leading: rpt.imageUrl != null? Image.file(
+                     File(rpt.imageUrl!),
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    )
+                  : const Icon(Icons.report),
+                title: Text(rpt.description),
                   subtitle: Text(
                     rpt.date.toLocal().toString().split('.').first,
                   ),

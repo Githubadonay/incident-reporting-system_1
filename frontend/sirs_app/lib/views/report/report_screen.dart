@@ -37,7 +37,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
     // Build Report model
     final report = Report(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      id: 0,
       description: _descriptionController.text,
       location: _locationController.text,
       date: DateTime.now(),
