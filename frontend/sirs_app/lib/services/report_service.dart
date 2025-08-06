@@ -12,6 +12,7 @@ class ReportService {
   // function for after submitting the report, timeout after 10sec, and dropping it of to nodejs as json file to store
   Future<bool> submitReport(Report report, {bool anonymous = false}) async {
     final url = Uri.parse('$_baseUrl/report');
+    //if the post doesnt respond throw an error to the "error submitting report and if post does respond post the json format to backend/db"
     try {
       final response = await http.post(
             url, headers: {'Content-Type': 'application/json'},
@@ -27,6 +28,7 @@ class ReportService {
 //function for fetching the report and allows the report history to use fetchreport
   Future<List<Report>> fetchReports() async {
     final url = Uri.parse('$_baseUrl/reports');
+    // if the report is OK send allow it to go to the history report, if not send error " cant find report"
     try {
       final response = await http.get(url).timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
