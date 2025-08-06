@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // create simple home page design,
   //small welcome page
-  //a button to take you to report tab
+  //A button to take you to report tab
   Widget _buildHomePage() {
     return Center(
       child: Column(
