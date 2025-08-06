@@ -44,7 +44,7 @@ class _ReportHistoryScreenState extends State<ReportHistoryScreen> {
           if(reports.isEmpty) {
             return const Center(child: Text('No reports yet'));
           }
-          // design a clean look for the report maybe a card style, tap and enter to see full report
+          //design a clean look for the report maybe a card style, tap and enter to see full report
           return ListView.builder(
             itemCount: reports.length,
             itemBuilder: (context, i) {
