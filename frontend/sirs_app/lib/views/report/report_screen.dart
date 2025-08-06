@@ -17,7 +17,7 @@ class _ReportScreenState extends State<ReportScreen> {
   final TextEditingController _locationController = TextEditingController();
   File? _imageFile;
   bool _isAnonymous = false;
-  // navigates to file to pick a phote.
+  //navigates to file to pick a phote.
   //fucntion for IMG
   Future<void> _pickImage() async {
     final picker = ImagePicker();
